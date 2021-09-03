@@ -1,0 +1,77 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User</title>
+</head>
+<body>
+    <h1>USER PROFILE</h1>
+    userID =<%= user.id %>
+    username= <%= user.name%>
+    <a href="/users/rent">RENT</a>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Google fonts-->
+    
+
+    <!-- SimpleLightbox plugin CSS-->
+
+    <link href="../assets/css/styles.css" rel="stylesheet" >
+</head>
+<body id="page-top" class="profbgBody">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top " id="mainNav">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="#page-top">Book Look</a>
+            <div id="navbarResponsive">
+                <ul class="navbar-nav ms-auto my-2 my-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/users/rent">Rent</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/users/borrow">Borrow</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">slot 2</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">slot 3</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="profile">
+    <h2 class=uprofileh2>My Profile</h2>
+    <table class=profiletable>
+        <tr class=profiletr>
+            <td>Name:</td>
+            <td><%= user.name %></td>
+        </tr>
+        <tr class=profiletr>  
+            <td>Email:</td>
+            <td><%= user.email %></td>
+        </tr>    
+        <tr class=profiletr>    
+            <td>DOB:</td>
+            <td><%= user.dob %></td>
+        </tr>
+        <tr class=profiletr>
+            <td>Username:</td>
+            <td><%= user.username %></td>
+        </tr>
+        <tr class=profiletr>
+            <td>Address:</td>
+            <td><%= user.address %></td>
+        </tr>
+        <tr class=profiletr>
+            <td>Phone Number:</td>
+            <td><%= user.phno %></td>
+        </tr>
+    </table>
+
+    </div>
+</body>
+</html>

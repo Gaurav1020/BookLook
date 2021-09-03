@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent</title>
+</head>
+<body>
+    <form action="/users/rent/add" method="POST">
+            <label for="bname"><b>Book Name</b></label><br>
+            <input type="text"  name="bname"  required><br><br>
+
+            <label for="author"><b>Book Author</b></label><br>
+            <input type="text"  name="author" required><br><br>
+
+            <label for="price"><b>Borrowing Price (per Day)</b></label><br>
+            <input type="number"  name="price" required><br><br>
+
+            <label for="duration"><b>Borrowing Duration</b></label><br>
+            <input type="number"  name="duration" required><br><br>
+
+            <label for="cprice"><b>Compensation Price</b></label><br>
+            <input type="number"  name="cprice" required><br><br>
+
+            <label for="phno"><b>Contact Number</b></label><br>
+            <input type="tel"  name="phno" required  pattern="[0-9]{10}" value=<%= user.phno %>><br><br>
+
+            <label for="desc"><b>Description</b></label><br>
+            <input type="text"  name="desc" required><br><br>
+            <input type="hidden" name="renter" value=<%= user.id %>>
+            <button type="submit">Submit</button><br>
+
+    </form>
+    
+    <h1>History</h1>
+    <table>
+        <tr>
+            <th>Book Name</th>
+            <th>Author</th>
+            <th>Price/day</th>
+            <th>Duration</th>
+            <th>Compensation Price</th>
+            <th>Contact Number</th>
+            <th>Description</th>
+            <th>Borrow Request</th>
+            <th>Borrower</th>
+            <th>Borrow Date</th>
+            <th>Return Date</th>
+            <th>Total</th>
+        </tr>
+        <% for(let i of books){ %>
+            <tr>
+                <td><%= i.bookname %></td>
+                <td><%= i.bookauthor %></td>
+                <td><%= i.borrowprice %></td>
+                <td><%= i.borrowduration %></td>
+                <td><%= i.compensationprice %></td>
+                <td><%= i.phno %></td>
+                <td><%= i.description %></td>
+                <td><% if(i.borrower != null) { %>
+                    
+                    <%= i.borrower.name %>
+                    <a href="/users/validate?vid=<%= i.borrower.id %>&des=Y&bid=<%= i.id %>">Validate</a>
+                    <a href="/users/validate?vid=<%= i.borrower.id %>&des=N&bid=<%= i.id %>">Decline</a>
+                    <% } %>
+                </td>
+                <td><% if(i.Validatedborrower != null) { %>
+                    
+                    <%= i.Validatedborrower.name %>
+                    <% } %>
+                </td>
+                <td><%= i.borrowdate %></td>
+                <td><%= i.returndate %></td>
+                <td><%= i.total %></td>
+            </tr>
+        <% } %>
+    </table>
+</body>
+</html>
