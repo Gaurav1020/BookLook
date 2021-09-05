@@ -72,6 +72,7 @@ module.exports.createSession = function(req,res){
 }
 
 module.exports.signout = function(req,res){
+    //passportjs adds logout function as callback to req method for easy session cookie timeout.
     req.logout();
     return res.redirect('/');
 }
@@ -209,4 +210,72 @@ module.exports.validate=function(req, res){
         return res.redirect('back');
     }
     return res.redirect('back');
+}
+
+module.exports.returnP = function(req, res){
+    Books.find({Validatedborrower: req.user.id}).
+    populate('renter').
+    populate('borrower').
+    populate('Validatedborrower').
+    exec(function(err,books){
+        if(err){
+            console.log('Error fetching data');
+        }
+        //console.log(books);
+        //console.log(books[n-1].description);
+        return res.render('return',{
+            books: books
+        })
+    })
+
+    //return res.render('return');
+}
+
+module.exports.returnred = function(req,res){
+    var bookid = req.body.bookid;
+    var OTP = req.body.OTP;
+    Books.findById(bookid).
+    populate('renter').
+    populate('borrower').
+    populate('Validatedborrower').
+    exec(function(err,book){
+        if(err){
+            console.log('Error fetching data');
+        }
+        console.log(book.OTP);
+        if( OTP==book.OTP){
+            Books.findByIdAndUpdate(bookid, { returned: true}, {upsert: true, useFindAndModify: false}, function(err1){
+                if(err1){
+                    console.log('Error updating data');
+                }
+                console.log("RETURNED");
+                return res.redirect('back');
+            })
+            
+        }
+        else{
+            console.log("NOT RETURNED");
+            return res.redirect('back');
+        }
+    })
+    // Books.findById(bookid, function(err,book){
+    //     if(err){
+    //         console.log('Error fetching data');
+    //     }
+    //     console.log(book.OTP);
+    //     if( OTP==book.OTP){
+    //         Books.findByIdAndUpdate(bookid, { returned: true}, {upsert: true, useFindAndModify: false}, function(err1){
+    //             if(err1){
+    //                 console.log('Error updating data');
+    //             }
+    //             console.log("RETURNED");
+    //             return res.redirect('back');
+    //         })
+            
+    //     }
+    //     else{
+    //         console.log("NOT RETURNED");
+    //         return res.redirect('back');
+    //     }
+    // })
 }

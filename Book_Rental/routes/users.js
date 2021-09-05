@@ -27,6 +27,7 @@ usersController.createSession);
 router.get('/sign-out', usersController.signout);
 
 router.get('/rent', passport.checkAuthentication,usersController.rent);
+
 router.post('/rent/add', passport.checkAuthentication,usersController.rentadd)
 
 router.get('/borrow', passport.checkAuthentication,usersController.borrow);
@@ -35,4 +36,7 @@ router.get('/borrowal', passport.checkAuthentication,usersController.borrowal);
 
 router.get('/validate', passport.checkAuthentication,usersController.validate);
 
+router.get('/return', passport.checkAuthentication,usersController.returnP);
+
+router.post('/return/ret', passport.checkAuthentication,usersController.returnred)
 module.exports = router;

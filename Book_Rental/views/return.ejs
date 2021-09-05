@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>RETURN</h1>
+    <table>
+        <tr>
+            <th>Book Name</th>
+            <th>Author</th>
+            <th>Price/day</th>
+            <th>Duration</th>
+            <th>Compensation Price</th>
+            <th>Contact Number</th>
+            <th>Renter</th>
+            <th>Borrow Date</th>
+            <th>Return?</th>
+            <th>Total</th>
+        </tr>
+        <% for(let i of books){ %>
+            <tr>
+                <td><%= i.bookname %></td>
+                <td><%= i.bookauthor %></td>
+                <td><%= i.borrowprice %></td>
+                <td><%= i.borrowduration %></td>
+                <td><%= i.compensationprice %></td>
+                <td><%= i.phno %></td>
+                <td><%= i.renter.name%></td>
+                <td><%= i.borrowdate %></td>
+                <td><% if(i.returned != true) { %>
+                    <form action="/users/return/ret" method="POST">
+                        <input type="number" name="OTP" placeholder="OTP">
+                        <input type="hidden" name="bookid" value=<%= i.id %>>
+                        <button type="submit">Submit</button>
+                    </form>
+                    <% } %>
+                </td>
+                <td><%= i.total %></td>
+            </tr>
+        <% } %>
+    </table>
+</body>
+</html>

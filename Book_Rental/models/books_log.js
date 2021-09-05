@@ -55,6 +55,10 @@ const bookSchema = new mongoose.Schema({
     returned:{
         type: Boolean,
         default: false
+    },
+    OTP:{
+        type:Number,
+        default:0
     }
 
 });
