@@ -1,5 +1,6 @@
 //require mongoose to run queries
 const mongoose = require('mongoose');
+var DateOnly= require('mongoose-dateonly')(mongoose);
 //declare schema with name todoSchema
 const bookSchema = new mongoose.Schema({
     bookname:{
@@ -29,7 +30,6 @@ const bookSchema = new mongoose.Schema({
     description:{
         type: String
     },
-
     renter: {
         type: mongoose.Schema.Types.ObjectID,
         ref: 'User',
@@ -44,10 +44,10 @@ const bookSchema = new mongoose.Schema({
         ref: 'User'
     },
     borrowdate: {
-        type: Date,
+        type: DateOnly,
     },
     returndate:{
-        type: Date
+        type: DateOnly,
     },
     total: {
         type: Number
@@ -60,7 +60,6 @@ const bookSchema = new mongoose.Schema({
         type:Number,
         default:0
     }
-
 });
 //convert todoSchema schema to model named Todo
 const Book = mongoose.model('Book', bookSchema);

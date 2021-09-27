@@ -48,6 +48,7 @@
             <th>Borrow Date</th>
             <th>Return Date</th>
             <th>Total</th>
+            <th>OTP</th>
         </tr>
         <% for(let i of books){ %>
             <tr>
@@ -73,6 +74,7 @@
                 <td><%= i.borrowdate %></td>
                 <td><%= i.returndate %></td>
                 <td><%= i.total %></td>
+                <td><%= i.OTP %></td>
             </tr>
         <% } %>
     </table>

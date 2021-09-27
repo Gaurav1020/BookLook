@@ -12,5 +12,4 @@ router.get('/about', homeController.about);
 
 
 router.use('/users',require('./users'));
-
 module.exports = router;

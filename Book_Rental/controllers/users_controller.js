@@ -1,8 +1,19 @@
 var Users= require('../models/users_model');
 var Books= require('../models/books_log');
 
-
+const RNG = function(str) {
+    for(var i = 0, h = 1779033703 ^ str.length; i < str.length; i++)
+        h = Math.imul(h ^ str.charCodeAt(i), 3432918353),
+        h = h << 13 | h >>> 19;
+    return function() {
+        h = Math.imul(h ^ h >>> 16, 2246822507);
+        h = Math.imul(h ^ h >>> 13, 3266489909);
+        return (h ^= h >>> 16) >>> 0;
+    }
+}
 module.exports.profile = function(req, res){
+    //var utc = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+    //console.log(utc)
     if(!req.query.q){
         return res.render('userProfile');
     }
@@ -122,6 +133,7 @@ module.exports.rent = function(req,res){
 }
 
 module.exports.rentadd = function(req,res){
+    
     Books.create({
         bookname: req.body.bname,
         bookauthor: req.body.author,
@@ -164,7 +176,7 @@ module.exports.borrowal= function(req,res){
     console.log(req.query);
         if(req.query.rid != req.user.id){
             //console.log(req.query.rid +"  "+ req.user.id)
-            Books.update({_id:req.query.book}, {$set: { borrower: req.user.id, borrowdate: utc}}, {upsert: true}, function(err){
+            Books.update({_id:req.query.book}, {$set: { borrower: req.user.id, borrowdate: utc, OTP: Math.floor(10000000+Math.random()*(10000000-1000000))}}, {upsert: true}, function(err){
                 if(err){
                     console.log('Error updating data');
                 }
