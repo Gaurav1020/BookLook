@@ -133,7 +133,6 @@ module.exports.rent = function(req,res){
 }
 
 module.exports.rentadd = function(req,res){
-    
     Books.create({
         bookname: req.body.bname,
         bookauthor: req.body.author,
@@ -151,7 +150,7 @@ module.exports.rentadd = function(req,res){
             return res.redirect('/');
         }
         console.log('New book added: ', book);
-        return res.redirect('/users/profile');
+        return res.redirect('back');
     })
 }
 

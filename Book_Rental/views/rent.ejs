@@ -5,9 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rent</title>
+    <script type="text/javascript" language="javascript">
+        function ClearForm(){
+            document.MyForm.reset();
+        }
+    </script>
 </head>
-<body>
-    <form action="/users/rent/add" method="POST">
+<body onload="ClearForm()">
+    <form action="/users/rent/add" method="POST" autocomplete="off">
             <label for="bname"><b>Book Name</b></label><br>
             <input type="text"  name="bname"  required><br><br>
 
