@@ -1,6 +1,6 @@
 var Users= require('../models/users_model');
 var Books= require('../models/books_log');
-
+const Confirm = require('prompt-confirm');
 const RNG = function(str) {
     for(var i = 0, h = 1779033703 ^ str.length; i < str.length; i++)
         h = Math.imul(h ^ str.charCodeAt(i), 3432918353),
@@ -289,4 +289,68 @@ module.exports.returnred = function(req,res){
     //         return res.redirect('back');
     //     }
     // })
+}
+
+module.exports.upupdate = function(req,res){
+    //console.log(req.user);
+    var arr={
+        'name':"",
+        'email':"",
+        'password':"",
+        'username':"",
+        'phno':"",
+        'address':""
+    };
+    arr.name=req.user.name;
+    arr.email=req.user.email;
+    arr.password=req.user.password;
+    arr.username=req.user.username;
+    arr.phno=req.user.phno;
+    arr.address=req.user.address;
+    //console.log(arr);
+    return res.render('update_profile',{user:arr});
+}
+module.exports.update_data =async function(req,res){
+    // console.log(req.user);
+    // return res.render('update_profile');
+    if(req.user.password != req.body.pwd){
+        Users.update({_id:req.user.id}, {$set: { email: req.body.email, username: req.body.username, phno:req.body.phno, address:req.body.address}}, {upsert: true}, function(err){
+            if(err){
+                console.log('Error updating User data');
+            }
+            //console.log(books);
+            return res.redirect('/users/cp')
+        })
+        
+    }
+    else{
+        Users.update({_id:req.user.id}, {$set: { email: req.body.email, username: req.body.username, phno:req.body.phno, address:req.body.address}}, {upsert: true}, function(err){
+            if(err){
+                console.log('Error updating User data');
+            }
+            //console.log(books);
+            return res.redirect('/users/profile');
+        })
+    }
+    
+}
+
+module.exports.cp=function(req,res){
+    return res.render('cp');
+}
+
+module.exports.cpcheck = function(req,res){
+    if(req.body.currpwd != req.user.password){
+        console.log("Password mismatch");
+        return;
+    }
+    else{
+        Users.update({_id:req.user.id}, {$set: {password:req.body.newpwd}}, {upsert: true}, function(err){
+            if(err){
+                console.log('Error updating password');
+            }
+            console.log("password update successful");
+            return res.redirect('/users/profile');
+        })
+    }
 }

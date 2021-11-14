@@ -38,7 +38,7 @@ app.use(passport.session());
 app.use(passport.setAuthenticatedUser);
 //const db = require('./config/mongoose');//const {object} = require('./models/{mongoose_model_name}');
 app.use('/',require('./routes/index'));
-
+const Confirm = require('prompt-confirm');
 
 
 app.listen(port, function(err){

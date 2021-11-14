@@ -38,5 +38,13 @@ router.get('/validate', passport.checkAuthentication,usersController.validate);
 
 router.get('/return', passport.checkAuthentication,usersController.returnP);
 
-router.post('/return/ret', passport.checkAuthentication,usersController.returnred)
+router.post('/return/ret', passport.checkAuthentication,usersController.returnred);
+
+router.get('/up-update', passport.checkAuthentication,usersController.upupdate);
+
+router.post('/update-req', passport.checkAuthentication,usersController.update_data);
+
+router.get('/cp', passport.checkAuthentication,usersController.cp);
+
+router.post('/cpcheck', passport.checkAuthentication,usersController.cpcheck)
 module.exports = router;
