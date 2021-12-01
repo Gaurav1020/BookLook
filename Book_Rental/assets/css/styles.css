@@ -100,7 +100,7 @@
   background: rgba(255, 255, 255, 0.103);
 }
 
-.rent_form label{
+.rent_form label:nth-child(1){
     display: inline-block;
     width: 140px;
     text-align: center;
@@ -217,7 +217,7 @@ form {
   margin-top: 50px;
   width: 60ch;
   color: white;
-  background-color: rgba(255, 255, 255, 0.329);
+  /*background-color: rgba(255, 255, 255, 0.329);*/
 }
 
 
@@ -11509,7 +11509,7 @@ hr.divider-light {
 
 #mainNav {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  background-color:  black;
+  background-color:#000;
   transition: background-color 0.2s ease;
 }
 #mainNav .navbar-brand {

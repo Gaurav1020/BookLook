@@ -50,6 +50,26 @@
             width: 30%;
             border: none;
         }
+
+        .dispnone {
+            display: none;
+        }
+
+        #inlineCheckbox1:checked {
+            background-color: green;
+        }
+
+        #inlineCheckbox2:checked {
+            background-color: rgb(13, 202, 240);
+        }
+
+        #inlineCheckbox3:checked {
+            background-color: rgb(184, 184, 0);
+        }
+
+        #inlineCheckbox4:checked {
+            background-color: rgb(207, 83, 49);
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
@@ -67,11 +87,6 @@
             document.MyForm.reset();
         }
     </script>
-    <style>
-        .dispnone{
-            display:none;
-        }
-    </style>
 </head>
 
 <body id="page-top" class="signinbody" onload="ClearForm()">
@@ -122,43 +137,82 @@
 
         </form>
 
+        <div id="maindiv">
+            <h1 id=renthist>History</h1>
+            <form style="padding-left:100px" method=get action=/users/rent id="filter-form">
+                <table class="table table-borderless" style="color:white; font-size:15px;">
+                    <tr>
+                        <td colspan=2><input type=text class="form-control" name="bnam" placeholder="Book name"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class="form-check-input" type="radio" id="inlineCheckbox1" name="filter" value="ret"
+                                style="width:20px; height:20px;">
+                            <label for="inlineCheckbox1">Returned</label>
+                        </td>
+                        <td>
+                            <input class="form-check-input" type="radio" id="inlineCheckbox2" name="filter" value="req"
+                                style="width:20px; height:20px;">
+                            <label width=40px for="inlineCheckbox2">Requested</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class="form-check-input" type="radio" id="inlineCheckbox3" name="filter" value="ren"
+                                style="width:20px; height:20px;">
+                            <label for="inlineCheckbox3">Rented</label>
+                        </td>
+                        <td>
+                            <input class="form-check-input" type="radio" id="inlineCheckbox4" name="filter" value="unr"
+                                style="width:20px; height:20px;">
+                            <label for="inlineCheckbox4">Unrequested</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan=2><input type="submit" class="btn btn-info" style="width:80px" id="filter-submit"
+                                value=Filter></td>
+                    </tr>
+                </table>
 
-        
-
-        
-        <div id="table-bordered">
-            <h1>History</h1><br><%= check %>
+            </form><br>
             <% nbtn="btn-primary" %>
             <% vbtn="btn-warning" %>
             <% bbtn="btn-info" %>
             <% rbtn="btn-success" %>
             <% btncol = nbtn %>
-            
+
             <% for(let i of books){ %>
-                
-                <% btncol = nbtn %>
-                <% if(i.borrower != null){btncol=bbtn} %>
-                <% if(i.Validatedborrower != null){btncol=vbtn} %>
-                <% if(i.returned == true){btncol=rbtn} %>
+
+            <% btncol = nbtn %>
+            <% if(i.borrower != null){btncol=bbtn} %>
+            <% if(i.Validatedborrower != null){btncol=vbtn} %>
+            <% if(i.returned == true){btncol=rbtn} %>
             <!-- <table class="table-bordered table">
                 <tr>
                     <td class=td> -->
-                        <p  >
-                            
-                            <a class="btn <%= btncol %> bh" data-toggle="collapse" href="#<%= i.id %>" role="button"
-                                aria-expanded="false" aria-controls="collapseExample" style="display:block;margin:0 auto;">
-                                <!-- <span style="word-spacing: normal;">Transaction <%= i.id %></span> -->
-                                <span class="text-nowrap bd-highlight text-truncate" style="word-spacing: normal; width:20%;margin-left:40px; display:inline-block; text-align:left;"><%= i.bookname %></span>
-                                <span class="text-nowrap bd-highlight text-truncate" style="word-spacing: normal; width:20%; display:inline-block;"><%= i.bookauthor  %></span>
-                                <span class="text-nowrap bd-highlight text-truncate" style="word-spacing: normal; width:10%; display:inline-block;">Price: $<%= i.borrowprice %>/day</span>
-                                <span class="text-nowrap bd-highlight text-truncate" style="word-spacing: normal; width:15%; display:inline-block;">Duration: <%= i.borrowduration %> days</span>
-                            </a>
-                        </p>
-                    <!-- </td>
+            <p>
+
+                <a class="btn <%= btncol %> bh" data-toggle="collapse" href="#<%= i.id %>" role="button"
+                    aria-expanded="false" aria-controls="collapseExample" style="display:block;margin:0 auto;">
+                    <!-- <span style="word-spacing: normal;">Transaction <%= i.id %></span> -->
+                    <span class="text-nowrap bd-highlight text-truncate"
+                        style="word-spacing: normal; width:20%;margin-left:40px; display:inline-block; text-align:left;"><%= i.bookname %></span>
+                    <span class="text-nowrap bd-highlight text-truncate"
+                        style="word-spacing: normal; width:20%; display:inline-block;"><%= i.bookauthor  %></span>
+                    <span class="text-nowrap bd-highlight text-truncate"
+                        style="word-spacing: normal; width:10%; display:inline-block;">Price:
+                        &#8377;<%= i.borrowprice %>/day</span>
+                    <span class="text-nowrap bd-highlight text-truncate"
+                        style="word-spacing: normal; width:15%; display:inline-block;">Duration: <%= i.borrowduration %>
+                        days</span>
+                </a>
+            </p>
+            <!-- </td>
                 </tr>
             </table> -->
             <div class="collapse" id="<%= i.id %>">
-                <table class="info-table" style=" margin: 0 auto; font-family:Verdana, Geneva, Tahoma, sans-serif; font-weight:bolder">
+                <table class="info-table"
+                    style=" margin: 0 auto; font-family:Verdana, Geneva, Tahoma, sans-serif; font-weight:bolder">
                     <tr>
                         <td>
                             Book Name:
@@ -180,7 +234,7 @@
                             Price/day:
                         </td>
                         <td>
-                            <%= i.borrowprice %>
+                            &#8377;<%= i.borrowprice %>
                         </td>
                     </tr>
                     <tr>
@@ -196,7 +250,7 @@
                             Compensation Price:
                         </td>
                         <td>
-                            <%= i.compensationprice %>
+                            &#8377;<%= i.compensationprice %>
                         </td>
                     </tr>
                     <tr>
@@ -223,8 +277,10 @@
                             <% if(i.borrower != null) { %>
 
                             <%= i.borrower.name %><br><br>
-                            <a class="btn btn-success" style="display:inline" href="/users/validate?vid=<%= i.borrower.id %>&des=Y&bid=<%= i.id %>">Validate</a>
-                            <a class="btn btn-danger" style="display:inline" href="/users/validate?vid=<%= i.borrower.id %>&des=N&bid=<%= i.id %>">Decline</a>
+                            <a class="btn btn-success" style="display:inline"
+                                href="/users/validate?vid=<%= i.borrower.id %>&des=Y&bid=<%= i.id %>">Validate</a>
+                            <a class="btn btn-danger" style="display:inline"
+                                href="/users/validate?vid=<%= i.borrower.id %>&des=N&bid=<%= i.id %>">Decline</a>
                             <% } %>
                         </td>
                     </tr>
@@ -274,24 +330,30 @@
 
                 </table>
             </div>
-
+            <% } %>
         </div>
-        <% } %>
+
 
         <div style="height:80px;"></div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script>
             $('#rent-form').on('submit', (function (e) {
+                window.location.hash = "";
                 e.preventDefault();
                 that = $(this);
                 console.log(that.serialize())
                 $.post('/users/rent/add', that.serialize());
                 that.trigger("reset");
-                $("#table-bordered").load(location.href + " #table-bordered");
+                $("#maindiv").load(document.URL + " #maindiv");
             }));
-            
-            
-            
+        </script>
+
+        <script>
+            var regex = /[?]/g;
+            //console.log("Location: "+window.location);
+            if (regex.test(window.location.href)) {
+                window.location.hash = "renthist";
+            }
         </script>
 </body>
 
