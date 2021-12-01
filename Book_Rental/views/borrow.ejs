@@ -1,42 +1,4 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Borrow</title>
-</head>
-<body>
-    <table>
-        <tr>
-            <th>Book Name</th>
-            <th>Author</th>
-            <th>Price/day</th>
-            <th>Duration</th>
-            <th>Compensation Price</th>
-            <th>Contact Number</th>
-            <th>Description</th>
-            <th>Renter</th>
-            <th>Borrow?</th>
-        </tr>
-        <% for(let i of books ){ %>
-            <% if ( i.borrower == null && i.Validatedborrower == null) { %>
-            <tr>
-                <td><%= i.bookname %></td>
-                <td><%= i.bookauthor %></td>
-                <td><%= i.borrowprice %></td>
-                <td><%= i.borrowduration %></td>
-                <td><%= i.compensationprice %></td>
-                <td><%= i.phno %></td>
-                <td><%= i.description %></td>
-                <td><%= i.renter.name %></td>
-                <td><a href="/users/borrowal?rid=<%= i.renter.id %>&book=<%= i.id %>">Borrow</a></td>
-            </tr>
-            <% } %>
-        <% } %>
-    </table>
-</body>
-</html> -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,6 +15,39 @@
         <!-- SimpleLightbox plugin CSS-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
     <link href="../assets/css/styles.css" rel="stylesheet" >
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <style>
+        .bh{
+          width:70%;
+          margin-left: 15%;
+        }
+        .table, .td {
+          width: 100%;
+          border: none;
+        }
+        .td{
+          display: block; 
+          box-sizing: border-box; 
+          clear: both;
+        }
+        .btn{
+          text-align:center;
+          word-spacing: 100px;
+        }
+        .table-bordered{
+          border: none;
+        }
+        
+        .info-table{
+          width: 30%;
+          border: none;
+          margin-left: 40%;
+        }
+
+      
+      </style>
 </head>
 <body class="signinbody">
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
@@ -72,9 +67,11 @@
     <div class="borrowHead">
         <h1>Borrow</h1>
     </div>
-    <table align="center" class="borrowTable table-bordered">
+    <% for(let i of books ){ %>
+        <% if ( i.borrower == null && i.Validatedborrower == null) { %>
+    <table align="center" class="borrowTable table-bordered table">
         
-        <tr>
+        <!-- <tr>
             <th>Book Name</th>
             <th>Author</th>
             <th>Price/day</th>
@@ -99,8 +96,93 @@
                 <td><a href="/users/borrowal?rid=<%= i.renter.id %>&book=<%= i.id %>"><button class="btn btn-dark">Borrow</button></a></td>
             </tr>
             <% } %>
+        <% } %> -->
+        <tr>
+            <td class=td><p>
+              <a class="btn btn-primary bh" data-toggle="collapse" href="#<%= i.id %>" role="button" aria-expanded="false" aria-controls="collapseExample">
+                <span style="word-spacing: normal;">Borrow <%= i.id %></span>
+              </a>
+            </p>
+        </td></tr>
+        </table>
+        <div class="collapse" id="<%= i.id %>">
+              <table class="info-table">
+                <tr>
+                  <td>
+                    Book Name:
+                  </td>
+                  <td>
+                    <%= i.bookname %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Author:
+                  </td>
+                  <td>
+                    <%= i.bookauthor %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Price/day:
+                  </td>
+                  <td>
+                    <%= i.borrowprice %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                      Duration:
+                  </td>
+                  <td>
+                      <%= i.borrowduration %>
+                  </td>
+                </tr>
+                <tr>
+                    <td>
+                      Compensation Price:
+                    </td>
+                    <td>
+                      <%= i.compensationprice %>
+                    </td>
+                </tr>
+                <tr>
+                  <td>
+                    Contact Number:
+                  </td>
+                  <td>
+                    <%= i.phno %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Description:
+                  </td>
+                  <td>
+                    <%= i.description %>
+                  </td>
+                </tr>
+                <tr>
+                    <td>
+                        Renter:
+                    </td>
+                    <td>
+                        <%= i.renter.name %>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Borrow?
+                    </td>
+                    <td>
+                        <a href="/users/borrowal?rid=<%= i.renter.id %>&book=<%= i.id %>"><button class="btn btn-dark">Borrow</button></a>
+                    </td>
+                  </tr>
+                  
+              </table>
+          </div>
+          <% } %>
         <% } %>
-    </table>
-    
 </body>
 </html>
