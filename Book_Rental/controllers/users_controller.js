@@ -101,38 +101,38 @@ module.exports.rent = function (req, res) {
         renter: req.user.id
     }).
     count(function (err, count) {
-        if (err) console.log(err);
+        if (err) {console.log(err);return res.redirect('back');}
         else n = count;
     })
     //Populate and return the values
     var filter = req.query.filter;
     console.log(filter)
-    
+
     var bnam = req.query.bnam;
-    bnamregex = new RegExp(bnam,"gi");
+    bnamregex = new RegExp(bnam, "gi");
     if (!filter) {
 
-            Books.find({
-                renter: req.user.id,
-                bookname: bnamregex
-            }).
-            populate('renter').
-            populate('borrower').
-            populate('Validatedborrower').
-            sort({
-                borrowdate:-1
-            }).
-            exec(function (err, books) {
-                if (err) {
-                    console.log('Error fetching data');
-                }
-                return res.render('rent', {
-                    books: books
-                })
+        Books.find({
+            renter: req.user.id,
+            bookname: bnamregex
+        }).
+        populate('renter').
+        populate('borrower').
+        populate('Validatedborrower').
+        sort({
+            borrowdate: -1
+        }).
+        exec(function (err, books) {
+            if (err) {
+                console.log('Error fetching data');
+                return res.redirect('back');
+            }
+            return res.render('rent', {
+                books: books
             })
-        
-    }
-    else if(filter=="ret"){
+        })
+
+    } else if (filter == "ret") {
         Books.find({
             renter: req.user.id,
             returned: true,
@@ -147,16 +147,18 @@ module.exports.rent = function (req, res) {
         exec(function (err, books) {
             if (err) {
                 console.log('Error fetching data');
+                return res.redirect('back');
             }
             return res.render('rent', {
                 books: books
             })
         })
-    }
-    else if(filter=="req"){
+    } else if (filter == "req") {
         Books.find({
             renter: req.user.id,
-            borrower: {$ne: null},
+            borrower: {
+                $ne: null
+            },
             bookname: bnamregex
         }).
         populate('renter').
@@ -168,16 +170,18 @@ module.exports.rent = function (req, res) {
         exec(function (err, books) {
             if (err) {
                 console.log('Error fetching data');
+                return res.redirect('back');
             }
             return res.render('rent', {
                 books: books
             })
         })
-    }
-    else if(filter=="ren"){
+    } else if (filter == "ren") {
         Books.find({
             renter: req.user.id,
-            Validatedborrower: {$ne: null},
+            Validatedborrower: {
+                $ne: null
+            },
             returned: false,
             bookname: bnamregex
         }).
@@ -190,13 +194,13 @@ module.exports.rent = function (req, res) {
         exec(function (err, books) {
             if (err) {
                 console.log('Error fetching data');
+                return res.redirect('back');
             }
             return res.render('rent', {
                 books: books
             })
         })
-    }
-    else if(filter=="unr"){
+    } else if (filter == "unr") {
         Books.find({
             renter: req.user.id,
             borrower: null,
@@ -213,6 +217,7 @@ module.exports.rent = function (req, res) {
         exec(function (err, books) {
             if (err) {
                 console.log('Error fetching data');
+                return res.redirect('back');
             }
             return res.render('rent', {
                 books: books
@@ -275,18 +280,39 @@ module.exports.rentadd = function (req, res) {
 }
 
 module.exports.borrow = function (req, res) {
-    Books.find({}).
+    var bnam = req.query.bnam;
+    bnamregex = new RegExp(bnam, "gi");
+    Books.find({
+        bookname: bnamregex
+    }).
     populate('renter').
-    populate('borrower').exec(function (err, books) {
+    populate('borrower').
+    populate('Validatedborrower').
+    sort({
+        borrowdate: -1
+    }).
+    exec(function (err, books) {
         if (err) {
             console.log('Error fetching data');
+            return res.redirect('back');
         }
-        //console.log(books);
-        //console.log(books[n-1].description);
         return res.render('borrow', {
             books: books
         })
     })
+
+    // Books.find({}).
+    // populate('renter').
+    // populate('borrower').exec(function (err, books) {
+    //     if (err) {
+    //         console.log('Error fetching data');
+    //     }
+    //     //console.log(books);
+    //     //console.log(books[n-1].description);
+    //     return res.render('borrow', {
+    //         books: books
+    //     })
+    // })
 }
 
 module.exports.borrowal = function (req, res) {
@@ -308,6 +334,7 @@ module.exports.borrowal = function (req, res) {
         }, function (err) {
             if (err) {
                 console.log('Error updating data');
+                return res.redirect('back');
             }
             //console.log(books);
             //console.log(books[n-1].description);
@@ -337,6 +364,7 @@ module.exports.validate = function (req, res) {
         }, function (err) {
             if (err) {
                 console.log('Error updating data');
+                return res.redirect('back');
             }
             //console.log(books);
         })
@@ -351,6 +379,7 @@ module.exports.validate = function (req, res) {
         }, function (err) {
             if (err) {
                 console.log('Error updating data');
+                return res.redirect('back');
             }
             //console.log(books);
         })
@@ -368,6 +397,7 @@ module.exports.validate = function (req, res) {
         }, function (err) {
             if (err) {
                 console.log('Error updating data');
+                return res.redirect('back');
             }
             //console.log(books);
         })
@@ -377,8 +407,11 @@ module.exports.validate = function (req, res) {
 }
 
 module.exports.returnP = function (req, res) {
+    var bnam = req.query.bnam;
+    bnamregex = new RegExp(bnam, "gi");
     Books.find({
-        Validatedborrower: req.user.id
+        Validatedborrower: req.user.id,
+        bookname: bnamregex
     }).
     populate('renter').
     populate('borrower').
@@ -390,13 +423,32 @@ module.exports.returnP = function (req, res) {
     exec(function (err, books) {
         if (err) {
             console.log('Error fetching data');
+            return res.redirect('back');
         }
-        //console.log(books);
-        //console.log(books[n-1].description);
-        return res.render('return', {
+        return res.render('return.ejs', {
             books: books
         })
     })
+    // Books.find({
+    //     Validatedborrower: req.user.id
+    // }).
+    // populate('renter').
+    // populate('borrower').
+    // populate('Validatedborrower').
+    // sort({
+    //     returned: 1,
+    //     borrowdate: 1
+    // }).
+    // exec(function (err, books) {
+    //     if (err) {
+    //         console.log('Error fetching data');
+    //     }
+    //     //console.log(books);
+    //     //console.log(books[n-1].description);
+    //     return res.render('return', {
+    //         books: books
+    //     })
+    // })
 
     //return res.render('return');
 }
@@ -414,6 +466,7 @@ module.exports.returnred = function (req, res) {
     exec(function (err, book) {
         if (err) {
             console.log('Error fetching data');
+            return res.redirect('back');
         }
         console.log(book.OTP);
 
@@ -423,15 +476,18 @@ module.exports.returnred = function (req, res) {
             td.setHours(0, 0, 0, 0);
             var dit = td.getTime() - bd.getTime();
             var did = dit / (1000 * 3600 * 24);
+            console.log(did);
             var price = book.borrowprice;
             var duration = book.borrowduration;
             var tprice = 0;
-            //console.log("did:"+did);
-            while (did > duration) {
-                tprice += 2 * price * duration;
-                did -= duration;
-            }
             tprice += did * price;
+            tprice += (did - duration) * price;
+            //console.log("did:"+did);
+            // while (did > duration) {
+            //     tprice += 2 * price * duration;
+            //     did -= duration;
+            // }
+            // tprice += did * price;
             //console.log("did:"+did);
             //console.log("total:"+tprice);
             // console.log("bd: "+ bd);
@@ -447,6 +503,7 @@ module.exports.returnred = function (req, res) {
             }, function (err1) {
                 if (err1) {
                     console.log('Error updating data');
+                    return res.redirect('back');
                 }
                 console.log("RETURNED");
                 return res.redirect('back');
@@ -519,6 +576,7 @@ module.exports.update_data = async function (req, res) {
         }, function (err) {
             if (err) {
                 console.log('Error updating User data');
+                return res.redirect('back');
             }
             //console.log(books);
             return res.redirect('/users/cp')
@@ -540,6 +598,7 @@ module.exports.update_data = async function (req, res) {
         }, function (err) {
             if (err) {
                 console.log('Error updating User data');
+                return res.redirect('back');
             }
             //console.log(books);
             return res.redirect('/users/profile');
@@ -568,9 +627,39 @@ module.exports.cpcheck = function (req, res) {
         }, function (err) {
             if (err) {
                 console.log('Error updating password');
+                return res.redirect('back');
             }
             console.log("password update successful");
             return res.redirect('/users/profile');
         })
     }
+}
+
+module.exports.delete = (req, res) => {
+    var bid = req.query.bd;
+    Books.findById(bid).
+    populate('renter').
+    populate('borrower').
+    populate('Validatedborrower').
+    exec(function (err, book) {
+        if(err){
+            console.log('Error deleting book');
+            return res.redirect('back');
+        }
+        else{
+            console.log("Hello");
+            if(book.Validatedborrower==null && book.borrower==null && book.returned==false){
+                Books.findByIdAndDelete(bid, function (err, docs) {
+                    if (err){
+                        console.log(err);
+                        return res.redirect('back');
+                    }
+                    else{
+                        console.log("Deleted : ", docs);
+                    }
+                });
+            }
+            return res.redirect('back');
+        }
+    })
 }

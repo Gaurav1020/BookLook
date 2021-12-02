@@ -52,17 +52,51 @@
       border: none;
     }
 
-    .info-table {
-      width: 30%;
+    .info-table{
+      width:auto;
       border: none;
-      margin-left: 40%;
+      
+    }
+    .collapse.show{
+      background: rgba(255, 255, 255, 0.05);
+      transition: background 0.25s;
+    }
+
+    #filter-form {
+      margin: auto;
+      width: fit-content;
+    }
+
+    .table-head {
+      margin-left: 286.5px;
+      align-items: right;
+      border: none;
+      width: 70%;
+      margin-bottom: 20px;
+      font-weight: bold;
+
+    }
+    .info-table tr td:nth-child(1) {
+      width: 50%;
+      padding: 5px 50px;
+  }
+  .info-table tr td:nth-child(2) {
+      width: 50%;
+      padding: 5px 0px;
+  }
+
+    .table-head tr th {
+      font-weight: 900;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: large;
     }
   </style>
 </head>
 
+
 <body id="page-top" class="signinbody">
   <!-- Navigation-->
-  <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top py-3" id="mainNav">
     <div class="container px-4 px-lg-5">
       <a class="navbar-brand" href="#page-top">Book Look</a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
@@ -80,149 +114,161 @@
   </nav>
   <!-- Masthead-->
 
-  <div class="rent_form" align="center">
+  <div class="borrowHead" align="center">
     <h1>Return</h1>
-  </div>
-  <% for(let i of books){ %>
-
-  <table class="table-bordered table">
-    <!-- <tr>
-            <th>Book Name</th>
-            <th>Author</th>
-            <th>Price/day</th>
-            <th>Duration</th>
-            <th>Compensation Price</th>
-            <th>Contact Number</th>
-            <th>Renter</th>
-            <th>Borrow Date</th>
-            <th>Return?</th>
-            <th style="width:70px;">Total</th>
+    <form method=get action=/users/return id="filter-form">
+      <table class="table table-borderless" style="color:white; font-size:15px;">
+        <tr>
+          <td><input type=text class="form-control" name="bnam" placeholder="Book name"></td>
+          <td><input type="submit" class="btn btn-success" style="width:80px" id="filter-submit" value=Search>
+          </td>
         </tr>
-        <% for(let i of books){ %>
-            <tr>
-                <td><%= i.bookname %></td>
-                <td><%= i.bookauthor %></td>
-                <td><%= i.borrowprice %></td>
-                <td><%= i.borrowduration %></td>
-                <td><%= i.compensationprice %></td>
-                <td><%= i.phno %></td>
-                <td><%= i.renter.name%></td>
-                <td><%= i.borrowdate %></td>
-                <td><% if(i.returned != true) { %>
-                    <form action="/users/return/ret" method="POST" class="otp-form">
-                        <input type="number" name="OTP" placeholder="OTP" class="otp" style="width:160px">
-                        <input type="hidden" name="bookid" class="otp-hidden" value=<%= i.id %> >
-                        <button type="submit" id="otp-submit">Submit</button>
-                    </form>
-                    <% } %>
-                </td>
-                <td><%= i.total %></td>
-            </tr>
-        <% } %> -->
+      </table>
 
-    <tr>
-      <td class=td>
-        <p>
-          <a class="btn btn-primary bh" data-toggle="collapse" href="#<%= i.id %>" role="button" aria-expanded="false"
-            aria-controls="collapseExample">
-            <span style="word-spacing: normal;">Return <%= i.id %></span>
-          </a>
-        </p>
-      </td>
-    </tr>
-  </table>
-  <div class="collapse" id="<%= i.id %>">
-    <table class="info-table">
-      <tr>
-        <td>
-          Book Name:
-        </td>
-        <td>
-          <%= i.bookname %>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Author:
-        </td>
-        <td>
-          <%= i.bookauthor %>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Price/day:
-        </td>
-        <td>
-          <%= i.borrowprice %>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Duration:
-        </td>
-        <td>
-          <%= i.borrowduration %>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Compensation Price:
-        </td>
-        <td>
-          <%= i.compensationprice %>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Contact Number:
-        </td>
-        <td>
-          <%= i.phno %>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Renter:
-        </td>
-        <td>
-          <%= i.renter.name%>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Borrow Date:
-        </td>
-        <td>
-          <%= i.borrowdate %>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Return?
-        </td>
-        <td>
-          <% if(i.returned != true) { %>
-          <form action="/users/return/ret" method="POST" class="otp-form">
-            <input type="number" name="OTP" placeholder="OTP" class="otp" style="width:160px">
-            <input type="hidden" name="bookid" class="otp-hidden" value=<%= i.id %>>
-            <button type="submit" id="otp-submit">Submit</button>
-          </form>
-          <% } %>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Total:
-        </td>
-        <td>
-          <%= i.total %>
-        </td>
+    </form>
+  </div>
+
+  <div id="table-bordered">
+    <% nbtn="btn-primary" %>
+    <% rbtn="btn-success" %>
+    <table class="table-head">
+      <tr style="background: linear-gradient(grey, rgb(77, 77, 77)); height:50px;">
+        <th
+          style="word-spacing: normal;height:50px; display:inline-block; text-align:left;  width:27.3%;margin-left:107px; padding-top:12.5px">
+          Book Name</th>
+        <th
+          style="word-spacing: normal;height:50px; display:inline-block; text-align:left; width:27.3%; padding-top:12.5px">
+          Author</th>
+        <th
+          style="word-spacing: normal;height:50px; display:inline-block; text-align:left; width:17.5%; padding-top:12.5px">
+          Price</th>
+        <th style="word-spacing: normal;height:50px; display:inline-block; text-align:left; padding-top:12.5px">Duration
+        </th>
       </tr>
     </table>
-  </div>
+    <% for(let i of books){ %>
+    <% btncol = nbtn %>
+    <% if(i.returned == true){btncol=rbtn} %>
 
+    <p>
+
+      <a class="btn <%= btncol %> bh" data-toggle="collapse" href="#<%= i.id %>" role="button" aria-expanded="false"
+        aria-controls="collapseExample" style="display:block;margin:0 auto;">
+        <!-- <span style="word-spacing: normal;">Transaction <%= i.id %></span> -->
+        <span class="text-nowrap bd-highlight text-truncate"
+          style="word-spacing: normal; width:20%;margin-left:40px; display:inline-block; text-align:left;"><%= i.bookname %></span>
+        <span class="text-nowrap bd-highlight text-truncate"
+          style="word-spacing: normal; width:20%; display:inline-block;text-align:left;"><%= i.bookauthor  %></span>
+        <span class="text-nowrap bd-highlight text-truncate"
+          style="word-spacing: normal; width:10%; display:inline-block;text-align:left;">Price:
+          &#8377;<%= i.borrowprice %>/day</span>
+        <span class="text-nowrap bd-highlight text-truncate"
+          style="word-spacing: normal; width:15%; display:inline-block;text-align:left;">Duration:
+          <%= i.borrowduration %> days</span>
+      </a>
+    </p>
+    <!-- </td>
+        </tr>
+    </table> -->
+    <div class="collapse" id="<%= i.id %>">
+      <table class="info-table"
+        style=" margin: 0 auto; font-family:Verdana, Geneva, Tahoma, sans-serif; font-weight:bolder">
+        <tr>
+          <td>
+            Book Name:
+          </td>
+          <td>
+            <%= i.bookname %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Author:
+          </td>
+          <td>
+            <%= i.bookauthor %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Price/day:
+          </td>
+          <td>
+            &#8377;<%= i.borrowprice %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Duration:
+          </td>
+          <td>
+            <%= i.borrowduration %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Compensation Price:
+          </td>
+          <td>
+            &#8377;<%= i.compensationprice %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Contact Number:
+          </td>
+          <td>
+            <%= i.phno %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Renter:
+          </td>
+          <td>
+            <%= i.renter.name%>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Borrow Date:
+          </td>
+          <td>
+            <%= i.borrowdate %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Return?
+          </td>
+          <td>
+            <% if(i.returned != true) { %>
+            <div style="display: table-cell;">
+              <form action="/users/return/ret" method="POST" class="otp-form" style="width: 0;">
+                <input type="number" name="OTP" placeholder="OTP" class="otp" style="width:160px">
+                <input type="hidden" name="bookid" class="otp-hidden" value=<%= i.id %>>
+                <button type="submit" id="otp-submit"
+                  style="width: fit-content; height:30px; padding:0px 10px">Submit</button>
+              </form>
+            </div>
+            <% } %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Total:
+          </td>
+          <td style="height: 10px;">
+            <%= i.total %>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+  </div>
   <% } %>
+
+  <div style="height:80px;"></div>
 
 </body>
 

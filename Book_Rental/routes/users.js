@@ -47,4 +47,6 @@ router.post('/update-req', passport.checkAuthentication,usersController.update_d
 router.get('/cp', passport.checkAuthentication,usersController.cp);
 
 router.post('/cpcheck', passport.checkAuthentication,usersController.cpcheck)
+
+router.get('/delete', passport.checkAuthentication,usersController.delete);
 module.exports = router;

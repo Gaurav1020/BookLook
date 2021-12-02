@@ -47,9 +47,11 @@
         }
 
         .info-table {
-            width: 30%;
+            width:auto;
             border: none;
+            
         }
+        
 
         .dispnone {
             display: none;
@@ -69,6 +71,43 @@
 
         #inlineCheckbox4:checked {
             background-color: rgb(207, 83, 49);
+        }
+
+        /* .info-table tr td:nth-child(1) {
+        } */
+        .info-table tr td:nth-child(1) {
+            width: 50%;
+            padding: 5px 50px;
+        }
+        .info-table tr td:nth-child(2) {
+            width: 50%;
+            padding: 5px 0px;
+        }
+
+        .collapse.show {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .fp {
+            text-decoration: none;
+        }
+
+        .table-head {
+            align-items: right;
+            border: none;
+            width: 70%;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .collapse.show{
+            background: rgba(255, 255, 255, 0.05);
+            transition: background 0.25s;
+          }
+
+        .table-head tr th {
+            font-weight: 900;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: large;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -91,7 +130,7 @@
 
 <body id="page-top" class="signinbody" onload="ClearForm()">
     <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top py-3" id="mainNav">
         <div class="container px-4 px-lg-5">
             <a class="navbar-brand" href="#page-top">Book Look</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
@@ -180,7 +219,22 @@
             <% bbtn="btn-info" %>
             <% rbtn="btn-success" %>
             <% btncol = nbtn %>
-
+            <table class="table-head">
+                <tr style="background: linear-gradient(grey, rgb(77, 77, 77)); height:50px;">
+                    <th
+                        style="word-spacing: normal;height:50px; display:inline-block; text-align:left;  width:27.3%;margin-left:107px; padding-top:12.5px">
+                        Book Name</th>
+                    <th
+                        style="word-spacing: normal;height:50px; display:inline-block; text-align:left; width:27.3%; padding-top:12.5px">
+                        Author</th>
+                    <th
+                        style="word-spacing: normal;height:50px; display:inline-block; text-align:left; width:17.5%; padding-top:12.5px">
+                        Price</th>
+                    <th
+                        style="word-spacing: normal;height:50px; display:inline-block; text-align:left; padding-top:12.5px">
+                        Duration</th>
+                </tr>
+            </table>
             <% for(let i of books){ %>
 
             <% btncol = nbtn %>
@@ -190,6 +244,7 @@
             <!-- <table class="table-bordered table">
                 <tr>
                     <td class=td> -->
+
             <p>
 
                 <a class="btn <%= btncol %> bh" data-toggle="collapse" href="#<%= i.id %>" role="button"
@@ -198,13 +253,15 @@
                     <span class="text-nowrap bd-highlight text-truncate"
                         style="word-spacing: normal; width:20%;margin-left:40px; display:inline-block; text-align:left;"><%= i.bookname %></span>
                     <span class="text-nowrap bd-highlight text-truncate"
-                        style="word-spacing: normal; width:20%; display:inline-block;"><%= i.bookauthor  %></span>
+                        style="word-spacing: normal; width:20%; display:inline-block; text-align:left;"><%= i.bookauthor  %></span>
                     <span class="text-nowrap bd-highlight text-truncate"
-                        style="word-spacing: normal; width:10%; display:inline-block;">Price:
+                        style="word-spacing: normal; width:10%; display:inline-block; text-align:left;">Price:
                         &#8377;<%= i.borrowprice %>/day</span>
                     <span class="text-nowrap bd-highlight text-truncate"
-                        style="word-spacing: normal; width:15%; display:inline-block;">Duration: <%= i.borrowduration %>
+                        style="word-spacing: normal; width:15%; display:inline-block; text-align:left;">Duration:
+                        <%= i.borrowduration %>
                         days</span>
+
                 </a>
             </p>
             <!-- </td>
@@ -212,7 +269,18 @@
             </table> -->
             <div class="collapse" id="<%= i.id %>">
                 <table class="info-table"
-                    style=" margin: 0 auto; font-family:Verdana, Geneva, Tahoma, sans-serif; font-weight:bolder">
+                    style=" margin: 0 auto; font-family:Verdana, Geneva, Tahoma, sans-serif; font-weight:bolder" >
+                    <tr>
+                        <td colspan=2>
+                            <% if (i.borrower==null && i.Validatedborrower==null && i.returned==false){ %>
+                            <a href="/users/delete?bd=<%= i._id %>" class="btn btn-primary"
+                                style="background-color: red; border: grey solid 2px"><img width=20px height=20px
+                                    src="../assets/images/delete.png"></a>
+                            <%}%>
+                        </td>
+                        
+                        
+                    </tr>
                     <tr>
                         <td>
                             Book Name:
@@ -265,7 +333,7 @@
                         <td>
                             Description:
                         </td>
-                        <td>
+                        <td style="max-width: 300px;">
                             <%= i.description %>
                         </td>
                     </tr>
@@ -276,7 +344,8 @@
                         <td>
                             <% if(i.borrower != null) { %>
 
-                            <%= i.borrower.name %><br><br>
+                            <a class="fp"
+                                href="http://localhost:8005/users/profile?q=<%= i.borrower.username %>"><%= i.borrower.name %></a><br><br>
                             <a class="btn btn-success" style="display:inline"
                                 href="/users/validate?vid=<%= i.borrower.id %>&des=Y&bid=<%= i.id %>">Validate</a>
                             <a class="btn btn-danger" style="display:inline"
@@ -291,7 +360,8 @@
                         <td>
                             <% if(i.Validatedborrower != null) { %>
 
-                            <%= i.Validatedborrower.name %>
+                            <a class="fp"
+                                href="http://localhost:8005/users/profile?q=<%= i.Validatedborrower.username %>"><%= i.Validatedborrower.name %></a>
                             <% } %>
                         </td>
                     </tr>
@@ -329,6 +399,7 @@
                     </tr>
 
                 </table>
+                <br><br>
             </div>
             <% } %>
         </div>
@@ -346,6 +417,17 @@
                 that.trigger("reset");
                 $("#maindiv").load(document.URL + " #maindiv");
             }));
+            window.onscroll = function() {scrollFunction()};
+ 
+//function scrollFunction() {
+//  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+//    
+//    document.querySelector(".navbar").style.background = "none";
+//  } else {
+//   
+//    document.querySelector(".navbar").style.background = "none";
+//  }
+//}
         </script>
 
         <script>
