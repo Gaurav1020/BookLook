@@ -283,7 +283,9 @@ module.exports.borrow = function (req, res) {
     var bnam = req.query.bnam;
     bnamregex = new RegExp(bnam, "gi");
     Books.find({
-        bookname: bnamregex
+        bookname: bnamregex,
+        borrower: null,
+        Validatedborrower: null
     }).
     populate('renter').
     populate('borrower').
@@ -296,6 +298,7 @@ module.exports.borrow = function (req, res) {
             console.log('Error fetching data');
             return res.redirect('back');
         }
+        
         return res.render('borrow', {
             books: books
         })
@@ -481,7 +484,8 @@ module.exports.returnred = function (req, res) {
             var duration = book.borrowduration;
             var tprice = 0;
             tprice += did * price;
-            tprice += (did - duration) * price;
+            if(did-duration>0)
+                tprice += (did - duration) * price;
             //console.log("did:"+did);
             // while (did > duration) {
             //     tprice += 2 * price * duration;
@@ -647,7 +651,6 @@ module.exports.delete = (req, res) => {
             return res.redirect('back');
         }
         else{
-            console.log("Hello");
             if(book.Validatedborrower==null && book.borrower==null && book.returned==false){
                 Books.findByIdAndDelete(bid, function (err, docs) {
                     if (err){

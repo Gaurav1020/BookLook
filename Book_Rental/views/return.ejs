@@ -52,12 +52,17 @@
       border: none;
     }
 
-    .info-table{
-      width:auto;
+    .info-table {
+      width: auto;
       border: none;
-      
+
     }
-    .collapse.show{
+
+    .fp {
+      text-decoration: none;
+    }
+
+    .collapse.show {
       background: rgba(255, 255, 255, 0.05);
       transition: background 0.25s;
     }
@@ -76,14 +81,16 @@
       font-weight: bold;
 
     }
+
     .info-table tr td:nth-child(1) {
       width: 50%;
       padding: 5px 50px;
-  }
-  .info-table tr td:nth-child(2) {
+    }
+
+    .info-table tr td:nth-child(2) {
       width: 50%;
       padding: 5px 0px;
-  }
+    }
 
     .table-head tr th {
       font-weight: 900;
@@ -226,7 +233,7 @@
             Renter:
           </td>
           <td>
-            <%= i.renter.name%>
+            <a class="fp" href="http://localhost:8005/users/profile?q=<%= i.renter.username %>"><%= i.renter.name %></a>
           </td>
         </tr>
         <tr>
